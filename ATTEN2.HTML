@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance List</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
+        h1, .footer-details { text-align: center; color: #4CAF50; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: center; border: 1px solid #ddd; }
+        th { background-color: #4CAF50; color: white; }
+        td.serial-number, th.serial-number { width: 5%; } /* Small size for serial number */
+        td.name, th.name { width: 20%; } /* Larger size for student name */
+        td.date, th.date { width: 20%; } /* Larger size for date */
+        .form-container { background-color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        input, select, button { padding: 10px; margin-right: 10px; }
+        button { background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        .error { color: red; margin-top: 10px; }
+        .footer-details { font-size: 12px; margin-top: 50px; color: gray; }
+    </style>
+</head>
+<body>
+
+    <h1>Student Attendance List</h1>
+
+    <div>
+        <input type="text" id="searchInput" placeholder="Search by Roll Number or Name">
+        <button onclick="searchAttendance()">Search</button>
+    </div>
+
+    <div class="form-container">
+        <h2>Enter Student Attendance</h2>
+        <form id="attendanceForm">
+            <input type="text" id="rollNo" placeholder="Roll Number" required>
+            <input type="text" id="studentName" placeholder="Student Name" required>
+            <input type="date" id="attendanceDate" required>
+            <select id="section" required>
+                <option value="" disabled selected>Select Section</option>
+                <option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option>
+            </select>
+            <select id="subject" required>
+                <option value="" disabled selected>Select Subject</option>
+                <option>Communication Skill</option><option>C Language</option><option>Computer System Architecture</option>
+                <option>Digital Electronics</option><option>Basic of Math</option>
+				tion>KAKAK</option><option>KAKAK
+				
+</option>
+            </select>
+            <select id="attendanceStatus" required>
+                <option value="" disabled selected>Attendance Status</option>
+                <option>Present</option><option>Absent</option>
+            </select>
+            <button type="submit">Add Attendance</button>
+            <div class="error" id="errorMessage"></div>
+        </form>
+    </div>
+
+    <table id="attendanceTable">
+        <thead>
+            <tr>
+                <th class="serial-number">#</th>
+                <th>Roll Number</th>
+                <th class="name">Student Name</th>
+                <th class="date">Date</th>
+                <th>Section</th>
+                <th>Subject</th>
+                <th>Attendance</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <footer class="footer-details">
+        <p>Project by Abdul Kalam, Supported by Ajit Ziddy</p>
+        <p>Class Mam: Bhavna Mam | Faculty Support: Jitendra Sir</p>
+        <p>Department: BCA (Faculty of Computing)</p>
+        <p>&copy; 2024 Abdul Kalam. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let serialNumber = 1;
+
+        document.getElementById('attendanceForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const rollNo = document.getElementById('rollNo').value.trim();
+            const studentName = document.getElementById('studentName').value;
+            const attendanceDate = document.getElementById('attendanceDate').value;
+            const section = document.getElementById('section').value;
+            const subject = document.getElementById('subject').value;
+            const attendanceStatus = document.getElementById('attendanceStatus').value;
+
+            if (isNaN(rollNo) || rollNo === '') {
+                document.getElementById('errorMessage').textContent = "Please enter a valid Roll Number.";
+                return;
+            }
+
+            const table = document.querySelector('#attendanceTable tbody');
+            const newRow = table.insertRow();
+            newRow.innerHTML = `<td class="serial-number">${serialNumber++}</td><td>${rollNo}</td><td class="name">${studentName}</td><td class="date">${attendanceDate}</td><td>${section}</td><td>${subject}</td><td>${attendanceStatus}</td>`;
+
+            document.querySelectorAll('#attendanceForm input, #attendanceForm select').forEach(input => input.value = '');
+            document.getElementById('errorMessage').textContent = '';
+        });
+
+        function searchAttendance() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#attendanceTable tbody tr');
+
+            rows.forEach(row => {
+                const rollNo = row.cells[1].textContent.toLowerCase();
+                const name = row.cells[2].textContent.toLowerCase();
+                row.style.display = rollNo.includes(input) || name.includes(input) ? '' : 'none';
+            });
+        }
+    </script>
+
+</body>
+</html>
